@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Os Olhos do Rei — Uma Aventura no Império Persa</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root{
+  --bg-deep:#170F26;
+  --sand:#D9A566;
+  --gold:#E8B94D;
+  --lapis:#1F4E79;
+  --turquoise:#2E8B8B;
+  --terracotta:#B5502D;
+  --cream:#F5E6C8;
+  --ink:#241226;
+  --danger:#B5402D;
+  --ok:#3E8E5A;
+  --skin:#DDA871;
+  --hair:#3A2418;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  background:radial-gradient(circle at 50% 0%, #2b1c40 0%, var(--bg-deep) 55%, #0d0817 100%);
+  font-family:'VT323', monospace;
+  color:var(--cream);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:10px;
+}
+
+.console{
+  width:100%;
+  max-width:960px;
+  background:linear-gradient(180deg,#3a2a22,#241a16 60%,#180f0c);
+  border-radius:24px;
+  padding:14px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6), inset 0 0 0 3px #5a4232;
+  position:relative;
+}
+.console:before{
+  content:"";
+  position:absolute; inset:8px;
+  border-radius:16px;
+  pointer-events:none;
+  background:repeating-linear-gradient(90deg, var(--gold) 0 10px, transparent 10px 20px);
+  opacity:.12;
+}
+.screen{
+  position:relative;
+  background:linear-gradient(180deg,#241832,#150c22);
+  border-radius:12px;
+  min-height:620px;
+  overflow:hidden;
+  box-shadow:inset 0 0 0 3px #000, inset 0 0 30px rgba(0,0,0,.6);
+  display:flex;
+  flex-direction:column;
+}
+.screen.shake-screen{animation:screenshake .5s;}
+@keyframes screenshake{
+  0%,100%{transform:translate(0,0);}
+  10%{transform:translate(-6px,2px);}
+  20%{transform:translate(6px,-2px);}
+  30%{transform:translate(-6px,0);}
+  40%{transform:translate(6px,2px);}
+  50%{transform:translate(-4px,-2px);}
+  60%{transform:translate(4px,2px);}
+  70%{transform:translate(-3px,0);}
+  80%{transform:translate(3px,1px);}
+  90%{transform:translate(-2px,0);}
+}
+.zigzag{
+  height:14px; width:100%;
+  background:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25%) 0 0/14px 14px,
+    linear-gradient(-135deg, var(--gold) 25%, transparent 25%) 0 0/14px 14px,
+    var(--terracotta);
+  flex-shrink:0;
+}
+
+h1,h2,h3{font-family:'Press Start 2P', monospace; line-height:1.6; margin:0 0 12px;}
+h1{font-size:22px;color:var(--gold); text-shadow:3px 3px 0 #000;}
+h2{font-size:17px;color:var(--turquoise); text-shadow:2px 2px 0 #000;}
+h3{font-size:14px;color:var(--sand);}
+p,li{font-size:24px;line-height:1.45;}
+.eyebrow{font-family:'Press Start 2P';font-size:10px;color:var(--terracotta);letter-spacing:1px;}
+
+.pad{padding:22px;flex:1;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+
+button{
+  font-family:'VT323', monospace;
+  font-size:24px;
+  cursor:pointer;
+  border:none;
+  min-height:48px;
+}
+.btn{
+  background:linear-gradient(180deg,var(--gold),#b8862c);
+  color:#241226;
+  padding:14px 24px;
+  border-radius:12px;
+  box-shadow:0 4px 0 #7a5a1c, inset 0 1px 0 rgba(255,255,255,.4);
+  font-weight:bold;
+  transition:transform .05s;
+}
+.btn:hover{filter:brightness(1.08);}
+.btn:active{transform:translateY(4px); box-shadow:0 0 0 #7a5a1c;}
+.btn.secondary{
+  background:linear-gradient(180deg,var(--turquoise),#1c5c5c);
+  color:var(--cream);
+  box-shadow:0 4px 0 #123f3f, inset 0 1px 0 rgba(255,255,255,.25);
+}
+.btn.danger{
+  background:linear-gradient(180deg,var(--terracotta),#7c351c);
+  color:var(--cream);
+  box-shadow:0 4px 0 #522514;
+}
+.btn.giant{font-size:30px;padding:20px 40px;border-radius:16px;}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+
+.title-screen{align-items:center;justify-content:center;text-align:center;gap:16px;position:relative;}
+.logo-wrap{position:relative;}
+.crest{
+  width:150px;height:150px;margin:0 auto;
+  background:radial-gradient(circle at 35% 30%, var(--gold), var(--terracotta) 70%, #6e2c14);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:72px;
+  box-shadow:0 0 0 6px #241226, 0 0 0 10px var(--gold), 0 0 40px rgba(232,185,77,.5), 0 12px 30px rgba(0,0,0,.6);
+  animation:pulseglow 2.4s infinite ease-in-out;
+}
+@keyframes pulseglow{
+  0%,100%{box-shadow:0 0 0 6px #241226, 0 0 0 10px var(--gold), 0 0 30px rgba(232,185,77,.4), 0 12px 30px rgba(0,0,0,.6);}
+  50%{box-shadow:0 0 0 6px #241226, 0 0 0 10px var(--gold), 0 0 55px rgba(232,185,77,.75), 0 12px 30px rgba(0,0,0,.6);}
+}
+.title-fire{position:relative;height:70px;display:flex;align-items:flex-end;justify-content:center;gap:26px;margin-top:-10px;}
+.flame{width:22px;height:38px;background:linear-gradient(180deg,#ffe27a,var(--gold) 40%,var(--terracotta) 80%);
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  filter:drop-shadow(0 0 10px rgba(232,185,77,.8));
+  animation:flame-flicker 1s infinite ease-in-out alternate;
+  transform-origin:bottom center;}
+.flame:nth-child(2){animation-delay:.15s;height:48px;width:26px;}
+.flame:nth-child(3){animation-delay:.3s;}
+@keyframes flame-flicker{
+  0%{transform:scaleY(1) scaleX(1) rotate(-2deg);}
+  50%{transform:scaleY(1.15) scaleX(.9) rotate(2deg);}
+  100%{transform:scaleY(.92) scaleX(1.05) rotate(-1deg);}
+}
+.title-walker{position:relative;height:90px;width:100%;overflow:hidden;}
+.subtitle{color:var(--sand); font-size:26px;}
+.flicker{animation:flicker 1.6s infinite;}
+@keyframes flicker{0%,100%{opacity:1;}50%{opacity:.55;}}
+
+/* --- avatar --- */
+.avatar-wrap{position:relative;width:140px;height:190px;margin:0 auto;image-rendering:pixelated;--c-skin:var(--skin);--c-hair:var(--hair);}
+.av-head{position:absolute;left:38px;top:20px;width:64px;height:60px;border-radius:50%;background:var(--c-skin);box-shadow:inset -6px -6px 0 rgba(0,0,0,.15);z-index:2;}
+.av-body{position:absolute;left:16px;top:74px;width:108px;height:104px;z-index:1;
+  clip-path:polygon(35% 0%,65% 0%,65% 10%,80% 10%,100% 100%,0% 100%,20% 10%,35% 10%);}
+.av-belt{position:absolute;left:16px;top:122px;width:108px;height:14px;background:#241226;z-index:2;}
+.av-symbol{position:absolute;left:0;top:86px;width:140px;text-align:center;font-size:24px;z-index:3;}
+.av-legs{position:absolute;left:42px;top:172px;width:56px;height:16px;background:#1a1010;z-index:1;clip-path:polygon(0 0,45% 0,45% 100%,0 100%,55% 100%,55% 0,100% 0,100% 100%,0 100%);}
+.av-hair{position:absolute;z-index:3;background:var(--c-hair);}
+/* hair styles */
+.hair-curto-liso .cap{left:32px;top:8px;width:76px;height:36px;border-radius:40px 40px 10px 10px;}
+.hair-curto-cacheado .cap{left:30px;top:6px;width:80px;height:40px;border-radius:50%;box-shadow:-14px 10px 0 -6px var(--c-hair),14px 10px 0 -6px var(--c-hair),0 -6px 0 -8px var(--c-hair);}
+.hair-medio-liso .cap{left:30px;top:8px;width:80px;height:34px;border-radius:40px 40px 6px 6px;}
+.hair-medio-liso .side{left:28px;top:36px;width:14px;height:52px;border-radius:0 0 8px 8px;}
+.hair-medio-liso .side2{left:98px;top:36px;width:14px;height:52px;border-radius:0 0 8px 8px;}
+.hair-medio-cacheado .cap{left:28px;top:6px;width:84px;height:38px;border-radius:50%;box-shadow:-16px 12px 0 -6px var(--c-hair),16px 12px 0 -6px var(--c-hair);}
+.hair-medio-cacheado .side{left:24px;top:32px;width:18px;height:44px;border-radius:50%;}
+.hair-medio-cacheado .side2{left:98px;top:32px;width:18px;height:44px;border-radius:50%;}
+.hair-longo-liso .cap{left:30px;top:8px;width:80px;height:32px;border-radius:40px 40px 6px 6px;}
+.hair-longo-liso .side{left:28px;top:34px;width:16px;height:96px;border-radius:0 0 10px 10px;}
+.hair-longo-liso .side2{left:96px;top:34px;width:16px;height:96px;border-radius:0 0 10px 10px;}
+.hair-longo-cacheado .cap{left:28px;top:6px;width:84px;height:36px;border-radius:50%;box-shadow:-16px 12px 0 -6px var(--c-hair),16px 12px 0 -6px var(--c-hair);}
+.hair-longo-cacheado .side{left:22px;top:30px;width:20px;height:90px;border-radius:50%;box-shadow:0 30px 0 -4px var(--c-hair),0 60px 0 -6px var(--c-hair);}
+.hair-longo-cacheado .side2{left:98px;top:30px;width:20px;height:90px;border-radius:50%;box-shadow:0 30px 0 -4px var(--c-hair),0 60px 0 -6px var(--c-hair);}
+.hair-trancas .cap{left:32px;top:8px;width:76px;height:30px;border-radius:40px 40px 4px 4px;}
+.hair-trancas .side{left:26px;top:30px;width:12px;height:80px;border-radius:6px;}
+.hair-trancas .side2{left:102px;top:30px;width:12px;height:80px;border-radius:6px;}
+.hair-trancas .tie{left:24px;top:100px;width:16px;height:8px;border-radius:4px;background:var(--gold);}
+.hair-trancas .tie2{left:100px;top:100px;width:16px;height:8px;border-radius:4px;background:var(--gold);}
+.hair-coque .cap{left:32px;top:10px;width:76px;height:32px;border-radius:40px 40px 6px 6px;}
+.hair-coque .bun{left:52px;top:-6px;width:36px;height:36px;border-radius:50%;}
+
+.creator-body{display:flex;gap:24px;flex-wrap:wrap;}
+.creator-avatar{flex:0 0 160px;}
+.creator-options{flex:1;min-width:240px;display:flex;flex-direction:column;gap:18px;}
+.opt-row label{display:block;font-family:'Press Start 2P';font-size:11px;color:var(--turquoise);margin-bottom:8px;}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;}
+.swatch{width:38px;height:38px;border-radius:8px;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.4);}
+.swatch.selected{border-color:var(--gold);transform:scale(1.15);}
+.symbol-row{display:flex;gap:10px;flex-wrap:wrap;}
+.symbol-btn{width:56px;height:56px;font-size:26px;border-radius:10px;background:#2c1f3d;border:2px solid transparent;color:var(--cream);}
+.symbol-btn.selected{border-color:var(--gold);background:#3d2a52;}
+.hair-row{display:flex;gap:10px;flex-wrap:wrap;}
+.hair-btn{padding:10px 12px;border-radius:10px;background:#2c1f3d;border:2px solid transparent;color:var(--cream);font-size:16px;text-align:center;min-width:96px;}
+.hair-btn.selected{border-color:var(--gold);background:#3d2a52;}
+input[type=text]{
+  font-family:'VT323';font-size:24px;padding:12px 14px;border-radius:8px;border:2px solid var(--gold);
+  background:#1a1226;color:var(--cream);width:100%;
+}
+
+/* HUD */
+.hud{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:rgba(0,0,0,.35);border-bottom:2px solid var(--gold);
+  font-family:'Press Start 2P';font-size:9px;flex-wrap:wrap;gap:8px;
+}
+.hud .pill{background:var(--ink);padding:6px 10px;border-radius:8px;border:1px solid var(--gold);white-space:nowrap;}
+.xpwrap{flex:1;min-width:130px;display:flex;flex-direction:column;gap:3px;}
+.xplabel{font-size:8px;color:var(--sand);}
+.progressbar{width:100%;height:10px;background:#000;border-radius:6px;overflow:hidden;border:1px solid var(--gold);}
+.progressfill{height:100%;background:linear-gradient(90deg,var(--turquoise),var(--gold));transition:width .4s;}
+.hud-btn{font-size:9px;font-family:'Press Start 2P';padding:8px 10px;border-radius:8px;}
+
+.scene-card{
+  background:linear-gradient(180deg,#2c1f3d,#1c1328);
+  border:2px solid var(--terracotta);
+  border-radius:12px;
+  padding:18px;
+  position:relative;
+}
+.scene-emoji{font-size:52px;text-align:center;margin-bottom:8px;}
+.npc-box{
+  margin-top:12px;background:#120b1c;border:2px solid var(--turquoise);border-radius:10px;padding:12px 14px;
+}
+.npc-name{font-family:'Press Start 2P';font-size:11px;color:var(--gold);margin-bottom:8px;}
+.npc-line{min-height:2.6em;}
+.npc-line .cursor{animation:blink 1s infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+/* --- exploration scene --- */
+.explore-wrap{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--terracotta);height:260px;
+  cursor:crosshair;touch-action:none;}
+.explore-wrap.type-desert,.explore-wrap.type-road,.explore-wrap.type-camp{background:linear-gradient(180deg,#3a2a55 0%,#5c3d2e 55%,#8a6135 100%);}
+.explore-wrap.type-market{background:linear-gradient(180deg,#3a2a55 0%,#4a3350 55%,#6b4a3a 100%);}
+.explore-wrap.type-palace{background:linear-gradient(180deg,#241832 0%,#3a2650 60%,#4a3260 100%);}
+.explore-wrap.type-city{background:linear-gradient(180deg,#2a2040 0%,#3d2e40 55%,#6b5540 100%);}
+.explore-wrap.type-river{background:linear-gradient(180deg,#1c3050 0%,#2e5560 55%,#5a7a4a 100%);}
+.explore-wrap.type-temple{background:linear-gradient(180deg,#2a1520 0%,#40201c 55%,#5c2a1c 100%);}
+.explore-wrap.type-archive{background:linear-gradient(180deg,#241832 0%,#33263f 55%,#3f3020 100%);}
+.explore-wrap.type-village{background:linear-gradient(180deg,#243040 0%,#3a4a3a 55%,#6b7a4a 100%);}
+.explore-ground{position:absolute;left:0;right:0;bottom:0;height:34%;background:rgba(0,0,0,.18);}
+.explore-hint{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:15px;color:var(--sand);text-shadow:1px 1px 2px #000;pointer-events:none;}
+.exp-avatar{position:absolute;width:52px;height:70px;transform:translate(-50%,-92%);transition:left .5s ease,top .5s ease;z-index:5;pointer-events:none;}
+.hotspot-dot{
+  position:absolute;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,185,77,.35),transparent 70%);
+  border:2px dashed var(--sand);display:flex;align-items:center;justify-content:center;font-size:24px;
+  cursor:pointer;z-index:4;animation:hotspot-pulse 1.8s infinite;
+}
+@keyframes hotspot-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.12);}}
+.hotspot-dot.correct{border-color:var(--ok);background:radial-gradient(circle,rgba(62,142,90,.5),transparent 70%);animation:none;}
+.hotspot-dot.wrong{border-color:var(--danger);background:radial-gradient(circle,rgba(181,64,45,.5),transparent 70%);animation:none;}
+.sand-particle{position:absolute;bottom:0;width:3px;height:3px;background:var(--sand);border-radius:50%;opacity:.7;animation:sand-drift linear infinite;}
+@keyframes sand-drift{
+  0%{transform:translate(0,0);opacity:0;}
+  10%{opacity:.8;}
+  90%{opacity:.5;}
+  100%{transform:translate(120px,-40px);opacity:0;}
+}
+.mini-fire{position:absolute;bottom:6px;width:16px;height:26px;background:linear-gradient(180deg,#ffe27a,var(--gold) 45%,var(--terracotta) 85%);
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;filter:drop-shadow(0 0 8px rgba(232,185,77,.7));
+  animation:flame-flicker .9s infinite ease-in-out alternate;z-index:3;}
+.bird{position:absolute;font-size:16px;animation:bird-fly 6s linear infinite;}
+@keyframes bird-fly{0%{transform:translateX(0) translateY(0);}50%{transform:translateX(80px) translateY(-14px);}100%{transform:translateX(160px) translateY(0);}}
+
+.hotspot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px;}
+.hotspot{
+  background:#241832;border:2px dashed var(--sand);border-radius:10px;padding:16px 10px;text-align:center;
+  cursor:pointer;font-size:19px;
+}
+.hotspot:hover{background:#332246;}
+.hotspot.correct{border-color:var(--ok);background:#1c3324;}
+.hotspot.wrong{border-color:var(--danger);background:#3a1c1c;}
+
+.q-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+.q-opt{
+  text-align:left;background:#241832;border:2px solid var(--sand);border-radius:10px;padding:14px 16px;color:var(--cream);
+  font-size:22px;
+}
+.q-opt:hover{background:#332246;}
+.q-opt.correct{background:#1c3324;border-color:var(--ok);}
+.q-opt.wrong{background:#3a1c1c;border-color:var(--danger);}
+.q-opt:disabled{cursor:default;}
+.explain-box{margin-top:12px;border-left:4px solid var(--ok);padding:12px 14px;background:#182818;border-radius:8px;font-size:20px;}
+
+.match-cols{display:flex;gap:18px;flex-wrap:wrap;}
+.match-col{flex:1;min-width:150px;display:flex;flex-direction:column;gap:10px;}
+.match-chip{
+  background:#241832;border:2px solid var(--sand);border-radius:10px;padding:12px;text-align:center;cursor:pointer;font-size:19px;
+}
+.match-chip.selected{border-color:var(--gold);background:#3d2a52;}
+.match-chip.locked{border-color:var(--ok);background:#1c3324;cursor:default;opacity:.9;}
+.match-chip.shake{animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+.assign-zone{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;}
+.chips{display:flex;gap:10px;flex-wrap:wrap;flex:1;min-width:180px;}
+.chip{background:#3d2a52;border:2px solid var(--gold);border-radius:22px;padding:8px 14px;cursor:pointer;font-size:19px;}
+.chip.selected{background:var(--gold);color:#241226;}
+.chip.used{opacity:.25;pointer-events:none;}
+.targets{display:flex;flex-direction:column;gap:10px;flex:1;min-width:180px;}
+.target{
+  background:#1c1328;border:2px dashed var(--sand);border-radius:10px;padding:12px;font-size:19px;min-height:20px;
+}
+.target.filled{border-style:solid;border-color:var(--ok);background:#1c3324;}
+.target.wrong-flash{border-color:var(--danger);}
+
+.clue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.tile{
+  aspect-ratio:1;background:#241832;border:2px solid var(--sand);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;
+}
+.tile.found{background:#1c3324;border-color:var(--ok);cursor:default;}
+
+.modal-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;
+  z-index:30; padding:16px;
+}
+.modal{
+  background:linear-gradient(180deg,#2c1f3d,#1c1328);border:3px solid var(--gold);border-radius:14px;
+  max-width:560px;width:100%;max-height:82%;overflow-y:auto;padding:20px;
+  animation:modal-pop .3s ease;
+}
+@keyframes modal-pop{0%{transform:scale(.85);opacity:0;}100%{transform:scale(1);opacity:1;}}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:12px;}
+.inv-item{background:#241832;border:2px solid var(--sand);border-radius:10px;padding:12px;text-align:center;}
+.inv-item .ic{font-size:38px;}
+.inv-item .nm{font-family:'Press Start 2P';font-size:9px;color:var(--gold);margin:8px 0;}
+.inv-item .ds{font-size:16px;color:var(--sand);}
+.inv-empty-slot{background:#180f22;border:2px dashed #3a2c4a;border-radius:10px;padding:16px;text-align:center;color:#4a3c5a;font-size:28px;}
+.ach-grid{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.ach-item{display:flex;gap:12px;align-items:center;background:#241832;border:2px solid var(--sand);border-radius:10px;padding:10px 12px;}
+.ach-item.locked{opacity:.35;}
+.ach-item .aic{font-size:30px;}
+.ach-item .anm{font-family:'Press Start 2P';font-size:9px;color:var(--gold);margin-bottom:4px;}
+.ach-item .ads{font-size:15px;color:var(--sand);}
+
+.reward-banner{
+  text-align:center;padding:18px;background:radial-gradient(circle,rgba(232,185,77,.25),transparent 70%);
+  border:2px solid var(--gold);border-radius:12px;
+}
+.glow-gold{animation:goldglow 1.3s infinite ease-in-out;display:inline-block;}
+@keyframes goldglow{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(232,185,77,.6));transform:scale(1);}
+  50%{filter:drop-shadow(0 0 24px rgba(232,185,77,1));transform:scale(1.12);}
+}
+.act-banner{
+  text-align:center;font-family:'Press Start 2P';font-size:12px;color:var(--terracotta);
+  padding:8px 0;
+}
+.final-screen{align-items:center;text-align:center;gap:16px;}
+.rank-badge{
+  font-family:'Press Start 2P';font-size:15px;color:var(--gold);
+  border:2px solid var(--gold);border-radius:12px;padding:14px 18px;
+  background:rgba(232,185,77,.1);
+}
+.summary-list{text-align:left;max-width:560px;margin:0 auto;font-size:21px;}
+.summary-list li{margin-bottom:8px;}
+
+.coin-shine{position:relative;display:inline-block;overflow:hidden;}
+.coin-shine:after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.7),transparent);
+  animation:coinshine 2.2s infinite;
+}
+@keyframes coinshine{0%{left:-60%;}100%{left:130%;}}
+
+.transition-veil{position:absolute;inset:0;background:#0d0817;z-index:40;opacity:0;pointer-events:none;}
+.transition-veil.active{animation:veil-fade .6s ease;}
+@keyframes veil-fade{0%{opacity:0;}45%{opacity:1;}100%{opacity:0;}}
+
+.toast-wrap{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:50;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{
+  font-family:'Press Start 2P';font-size:11px;color:#241226;background:linear-gradient(180deg,var(--gold),#b8862c);
+  padding:12px 18px;border-radius:10px;box-shadow:0 4px 0 #7a5a1c,0 0 20px rgba(232,185,77,.6);
+  animation:toast-in .35s ease, toast-out .4s ease 2.2s forwards;
+  white-space:nowrap;
+}
+@keyframes toast-in{0%{transform:translateY(-30px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+@keyframes toast-out{0%{opacity:1;}100%{opacity:0;transform:translateY(-15px);}}
+
+.levelup-banner{
+  position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,8,23,.85);
+}
+.levelup-card{text-align:center;padding:26px;border:3px solid var(--gold);border-radius:16px;
+  background:linear-gradient(180deg,#2c1f3d,#1c1328);animation:modal-pop .35s ease;}
+
+.sound-toggle{position:fixed;top:16px;right:16px;z-index:60;font-family:'Press Start 2P';font-size:16px;
+  background:var(--ink);border:2px solid var(--gold);border-radius:50%;width:52px;height:52px;color:var(--cream);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 0 #000;}
+
+.cinematic{align-items:center;justify-content:center;text-align:center;gap:16px;position:relative;min-height:520px;}
+.cine-emoji{font-size:64px;}
+.cine-label{font-family:'Press Start 2P';font-size:10px;color:var(--terracotta);}
+.cine-text{max-width:520px;margin:0 auto;font-size:24px;min-height:4em;}
+
+.footer-nav{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:2px solid var(--gold);background:rgba(0,0,0,.25);flex-wrap:wrap;gap:10px;}
+
+@media (max-width:520px){
+  h1{font-size:17px;} h2{font-size:14px;}
+  p,li{font-size:22px;}
+  .screen{min-height:640px;}
+  .pad{padding:16px;}
+  .explore-wrap{height:220px;}
+}
+</style>
+</head>
+<body>
+<button class="sound-toggle" id="soundToggle" title="Som">🔊</button>
+<div class="console">
+  <div class="screen" id="screen"></div>
+</div>
+
+<script>
+/* ============================================================
+   OS OLHOS DO REI — dados do jogo
+   ============================================================ */
+const COLORS = {
+  tunic:['#B5502D','#1F4E79','#2E8B8B','#7A4EA6','#3E8E5A','#8C1F3D']
+};
+const SYMBOLS = [
+  {key:'sol', icon:'☀️', name:'Sol'},
+  {key:'leao', icon:'🦁', name:'Leão'},
+  {key:'estrela', icon:'⭐', name:'Estrela'},
+  {key:'asa', icon:'🪽', name:'Asa Sagrada'}
+];
+const HAIRSTYLES = [
+  {key:'curto-liso', name:'Curto liso'},
+  {key:'curto-cacheado', name:'Curto cacheado'},
+  {key:'medio-liso', name:'Médio liso'},
+  {key:'medio-cacheado', name:'Médio cacheado'},
+  {key:'longo-liso', name:'Longo liso'},
+  {key:'longo-cacheado', name:'Longo cacheado'},
+  {key:'trancas', name:'Tranças'},
+  {key:'coque', name:'Coque'}
+];
+
+const ITEMS = {
+  pergaminho:{name:'Pergaminho Real', icon:'📜', desc:'O rei usa este pergaminho para mandar ordens para todo o império.'},
+  cilindro:{name:'Cilindro de Ciro', icon:'🏺', desc:'Uma peça de argila com as palavras de Ciro, respeitando os povos conquistados.'},
+  mapa:{name:'Mapa das Satrapias', icon:'🗺️', desc:'Mostra como o império foi dividido em várias regiões.'},
+  selo:{name:'Selo do Sátrapa', icon:'🔱', desc:'Os governadores usam este selo para assinar documentos importantes.'},
+  darico:{name:'Moeda Dárico', icon:'🪙', desc:'Moeda de ouro criada pelos persas para facilitar o comércio.'},
+  estrada:{name:'Fragmento da Estrada Real', icon:'🛤️', desc:'Um pedaço da grande estrada que ligava Susa a Sardes.'},
+  medalha:{name:'Medalha do Historiador', icon:'🏅', desc:'Prêmio de quem desvenda os mistérios do passado.'},
+  tocha:{name:'Tocha Sagrada', icon:'🔥', desc:'Símbolo do zoroastrismo: a religião que valorizava a verdade.'}
+};
+
+const ACHIEVEMENTS = [
+  {id:'first_clue', name:'Primeira Pista', desc:'Você encontrou sua primeira pista.', icon:'🔍'},
+  {id:'act1', name:'Nascimento do Império', desc:'Você terminou o Ato I.', icon:'🏰'},
+  {id:'act2', name:'Grande Conquistador', desc:'Você terminou o Ato II.', icon:'⚔️'},
+  {id:'act3', name:'Mestre das Satrapias', desc:'Você terminou o Ato III.', icon:'🔱'},
+  {id:'act4', name:'Os Olhos do Rei', desc:'Você terminou o Ato IV.', icon:'👁️'},
+  {id:'act5', name:'Guardião da Verdade', desc:'Você terminou o jogo inteiro.', icon:'🔥'},
+  {id:'collector', name:'Colecionador Real', desc:'Você reuniu todos os itens do inventário.', icon:'🎒'},
+  {id:'perfect', name:'Mente Brilhante', desc:'Você acertou todas as perguntas sem errar nenhuma.', icon:'🧠'}
+];
+
+const LEVELS = [
+  {name:'Aprendiz', min:0},
+  {name:'Escriba', min:70},
+  {name:'Guardião', min:160},
+  {name:'Olhos do Rei', min:260}
+];
+
+/* Cenas cinematográficas, mostradas antes de fases-chave */
+const CINEMATICS = {
+  'A união de dois povos': {label:'550 a.C.', titleC:'A União de Dois Povos', bg:'camp', emoji:'⚔️',
+    text:'Ciro reúne os persas e os medos em um só povo. Neste momento nasce um novo e enorme império.'},
+  'Os portões de Babilônia': {label:'A grande conquista', titleC:'Os Portões de Babilônia', bg:'city', emoji:'🚪',
+    text:'Os portões de Babilônia se abrem. Ciro entra sem destruir nada. A cidade respira aliviada.'},
+  'Margens do Nilo': {label:'Expansão', titleC:'Chegada ao Egito', bg:'river', emoji:'🐫',
+    text:'Os soldados persas caminham pelas margens do Nilo. O antigo Egito passa a fazer parte do império.'},
+  'A grande estrada': {label:'Uma obra gigante', titleC:'A Estrada Real', bg:'road', emoji:'🛤️',
+    text:'Uma estrada enorme liga Susa a Sardes. Cavalos descansados e mensageiros cruzam o império rapidamente.'},
+  'Diante do trono': {label:'O momento da verdade', titleC:'O Julgamento em Persépolis', bg:'palace', emoji:'👑',
+    text:'Diante do Grande Rei, todas as provas são mostradas. A verdade finalmente aparece para todos.'}
+};
+
+const PHASES = [
+{act:'Ato I — O nascimento do império', title:'O chamado do rei', objective:'Descobrir por que você foi chamado ao palácio.',
+ emoji:'🏰', type:'palace', scenario:'Você chega ao Salão do Trono, em Persépolis. As colunas são douradas e um mensageiro anda de um lado para o outro, nervoso.',
+ npc:{name:'Mensageiro Real', line:'Que bom que chegaste! Documentos importantes do rei sumiram. Preciso de alguém corajoso para viajar pelo império e encontrá-los!'},
+ minigame:'clue', clues:['Um baú fechado no canto','Um pergaminho aberto sobre a mesa','Um vaso de cerâmica'], clueCorrect:1, foundMsg:'Pista encontrada!',
+ question:{text:'Antes de formarem um império, quem eram os persas?', options:['Um povo que vivia nas montanhas do Irã, cuidando de animais','Um povo grego, perto do mar','Um povo egípcio, perto do rio Nilo','Um povo que vivia no litoral do Mediterrâneo'], correct:0,
+ explain:'Os persas eram um povo que vivia no planalto do Irã. Perto deles morava outro povo parecido: os medos.'},
+ reward:'pergaminho'},
+
+{act:'Ato I — O nascimento do império', title:'Medos e persas', objective:'Descobrir como era a relação entre medos e persas.',
+ emoji:'⛰️', type:'village', scenario:'Uma pequena aldeia nas montanhas. Pastores cuidam dos animais e uma senhora conta histórias antigas perto do fogo.',
+ npc:{name:'Anciã da aldeia', line:'Antes de sermos um só povo, nós, persas, obedecíamos aos medos. Eles eram nossos vizinhos das montanhas.'},
+ minigame:'clue', clues:['Um colar de contas','Um registro do acordo entre os dois povos','Um tear de tecer'], clueCorrect:1, foundMsg:'Documento recuperado!',
+ question:{text:'Qual povo mandava nos persas antes de Ciro unir os dois povos?', options:['Os medos','Os babilônios','Os assírios','Os lídios'], correct:0,
+ explain:'Os medos governavam os persas, até Ciro se revoltar e unir os dois povos sob o seu comando.'},
+ reward:null},
+
+{act:'Ato I — O nascimento do império', title:'A união de dois povos', objective:'Descobrir em que ano nasceu o Império Persa.',
+ emoji:'⚔️', type:'camp', scenario:'Um campo aberto, onde generais conversam sobre a nova aliança entre medos e persas, comandada por Ciro.',
+ npc:{name:'General persa', line:'Foi neste ano que Ciro uniu o nosso povo ao dos medos. Isso deu início a algo muito maior do que imaginávamos.'},
+ minigame:'clue', clues:['Uma espada antiga','Uma inscrição com a data da união','Um cesto de grãos'], clueCorrect:1, foundMsg:'Pista encontrada!',
+ question:{text:'Em que ano Ciro uniu medos e persas, criando o Império Persa?', options:['550 a.C.','490 a.C.','331 a.C.','700 a.C.'], correct:0,
+ explain:'Em 550 a.C., Ciro venceu os medos e uniu os dois povos. Assim nasceu o Império Persa.'},
+ reward:null},
+
+{act:'Ato I — O nascimento do império', title:'O primeiro grande império', objective:'Entender o tamanho do território unido por Ciro.',
+ emoji:'🗺️', type:'palace', scenario:'Uma sala cheia de mapas desenhados à mão. Um cartógrafo real organiza rolos com terras conhecidas.',
+ npc:{name:'Cartógrafo real', line:'Nunca um governante tinha reunido tantos povos e terras diferentes sob um só comando. Isso mudou tudo.'},
+ minigame:'clue', clues:['Um mapa incompleto do império','Uma moeda estrangeira antiga','Um pedaço de cerâmica quebrado'], clueCorrect:0, foundMsg:'Pista encontrada!',
+ question:{text:'O que tornou o Império Persa, sob Ciro, tão importante para a época?', options:['Ele juntou vários povos e terras em um só governo, ficando enorme','Era só uma cidade pequena','Era só uma aliança comercial, sem governo','Era um território pequeno e isolado'], correct:0,
+ explain:'O Império Persa virou o maior império que o mundo antigo já tinha visto até aquele momento.'},
+ reward:null},
+
+{act:'Ato I — O nascimento do império', title:'O Cilindro de Ciro', objective:'Decifrar os símbolos do famoso cilindro de argila.',
+ emoji:'🏺', type:'archive', scenario:'Nos arquivos de Babilônia, um escriba mostra um cilindro coberto de escrita cuneiforme, guardado com muito cuidado.',
+ npc:{name:'Escriba babilônico', line:'Este cilindro guarda as palavras do próprio Ciro. Decifra os símbolos e vais entender por que o nosso povo o respeita tanto.'},
+ minigame:'symbol',
+ pairs:[
+   {symbol:'☀️', meaning:'O poder do Grande Rei'},
+   {symbol:'🕊️', meaning:'Liberdade para os povos'},
+   {symbol:'🏛️', meaning:'Respeito aos templos locais'},
+   {symbol:'📜', meaning:'Um decreto oficial registrado'}
+ ],
+ question:{text:'O que ficou escrito no Cilindro de Ciro, um dos documentos mais importantes da Antiguidade?', options:['A permissão para os povos conquistados manterem suas crenças e costumes','A ordem para destruir templos de outras religiões','A criação de jogos esportivos','A proibição de falar outras línguas'], correct:0,
+ explain:'O Cilindro de Ciro mostra que o rei deixava os povos conquistados manterem suas religiões e costumes.'},
+ reward:'cilindro'},
+
+{act:'Ato II — As conquistas', title:'Os portões de Babilônia', objective:'Entender como Ciro conquistou Babilônia sem destruir a cidade.',
+ emoji:'🚪', type:'city', scenario:'Os enormes portões de Babilônia se abrem. Sacerdotes observam os soldados persas entrando sem violência.',
+ npc:{name:'Sacerdote babilônico', line:'Esperávamos destruição... mas Ciro respeitou nossos templos e libertou os povos que estavam presos aqui.'},
+ minigame:'clue', clues:['O portão intacto de Babilônia','Uma estátua derrubada','Uma muralha destruída'], clueCorrect:0, foundMsg:'Segredo revelado!',
+ question:{text:'Como Ciro tratou a cidade de Babilônia quando a conquistou?', options:['Destruiu templos e escravizou o povo','Respeitou os costumes locais e libertou povos que estavam presos, como os hebreus','Expulsou todos os moradores','Transformou a cidade em um deserto'], correct:1,
+ explain:'Ciro conquistou Babilônia sem destruí-la. Ele respeitou os templos e libertou povos presos, como os hebreus.'},
+ reward:null},
+
+{act:'Ato II — As conquistas', title:'Povos e costumes', objective:'Conhecer a diversidade cultural reunida pelo império.',
+ emoji:'🏺', type:'market', scenario:'Um mercado agitado, cheio de comerciantes de povos diferentes vendendo tecidos, temperos e objetos das suas terras.',
+ npc:{name:'Mercadora viajante', line:'Aqui você encontra costumes de todos os cantos do império. Consegue descobrir de onde vem cada um?'},
+ minigame:'match2',
+ pairs:[
+   {symbol:'👑 Turbante decorado', meaning:'Lídios'},
+   {symbol:'🏺 Cerâmica com escrita', meaning:'Babilônios'},
+   {symbol:'📜 Papiro com desenhos', meaning:'Egípcios'},
+   {symbol:'🧵 Tapete das montanhas', meaning:'Medos'}
+ ],
+ question:{text:'Uma das grandes marcas do Império Persa era:', options:['Obrigar todos os povos a virarem persas','Respeitar as religiões e culturas dos povos conquistados','Proibir o comércio entre povos diferentes','Acabar com as línguas locais'], correct:1,
+ explain:'Os persas deixavam os povos conquistados manterem suas línguas, religiões e costumes. Isso deixava o império mais estável.'},
+ reward:null},
+
+{act:'Ato II — As conquistas', title:'O mapa das conquistas', objective:'Montar o mapa da expansão do império depois de Ciro.',
+ emoji:'🗺️', type:'palace', scenario:'A sala real de mapas. Você precisa colocar cada região conquistada no lugar certo do mapa.',
+ npc:{name:'Cartógrafo real', line:'Arraste cada região até o lugar certo. Assim você vai ver como o império cresceu depois de Ciro.'},
+ minigame:'assign',
+ items:['Pérsia (o centro do império)','Média','Babilônia','Lídia','Egito'],
+ targets:['Terra natal do povo persa','Terra dos antigos donos, unida por Ciro','Cidade que Ciro poupou da destruição','Terra do ouro, conquistada depois','Terra do rio Nilo, conquistada por Cambises'],
+ correctMap:[0,1,2,3,4],
+ question:{text:'Depois de Ciro, quais reis continuaram expandindo o Império Persa?', options:['Cambises e Dario','Alexandre e Felipe','Ramsés e Tutancâmon','Péricles e Sólon'], correct:0,
+ explain:'Cambises conquistou o Egito. Depois, Dario expandiu ainda mais o território e organizou a administração do império.'},
+ reward:'mapa'},
+
+{act:'Ato II — As conquistas', title:'A Lídia e o ouro', objective:'Descobrir por que a conquista da Lídia foi tão importante.',
+ emoji:'👑', type:'market', scenario:'Sardes, a capital da rica Lídia. Comerciantes mostram barras de ouro e moedas brilhantes nas bancas.',
+ npc:{name:'Comerciante lídio', line:'Nossa terra era famosa pelo ouro e pelas rotas de comércio. Depois da conquista, isso fortaleceu o império inteiro.'},
+ minigame:'clue', clues:['Uma barra de ouro lídio','Um tecido velho e rasgado','Uma ferramenta de pedra'], clueCorrect:0, foundMsg:'Pista encontrada!',
+ question:{text:'Por que a conquista da Lídia foi importante para os persas?', options:['Deu acesso a rotas de comércio e riquezas, como o ouro','Trouxe o primeiro alfabeto ao império','Começou o cultivo de arroz na região','Acabou com todo o comércio marítimo'], correct:0,
+ explain:'A Lídia era conhecida por suas riquezas e rotas comerciais. Isso fortaleceu bastante a economia do império.'},
+ reward:null},
+
+{act:'Ato II — As conquistas', title:'Margens do Nilo', objective:'Registrar a conquista do Egito pelos persas.',
+ emoji:'🐫', type:'river', scenario:'Às margens do rio Nilo, um sacerdote egípcio observa as tropas persas se aproximando com cuidado.',
+ npc:{name:'Sacerdote egípcio', line:'Nosso reino, tão antigo, agora faz parte de um império ainda maior, comandado por Cambises.'},
+ minigame:'clue', clues:['Um papiro egípcio sobre a conquista','Uma cesta de frutas','Um colar de conchas'], clueCorrect:0, foundMsg:'Documento recuperado!',
+ question:{text:'Qual rei persa conquistou o Egito, deixando o império ainda maior?', options:['Cambises','Ciro','Xerxes','Dario'], correct:0,
+ explain:'Cambises, filho de Ciro, conquistou o Egito. Assim o território do Império Persa cresceu ainda mais.'},
+ reward:null},
+
+{act:'Ato III — A organização do império', title:'As satrapias', objective:'Entender como o império era dividido em regiões.',
+ emoji:'🔱', type:'archive', scenario:'Uma sala de arquivos com mapas mostrando o território dividido em várias regiões administrativas.',
+ npc:{name:'Conselheiro real', line:'Um território tão grande não podia ser governado de um só lugar. Por isso foi dividido em satrapias.'},
+ minigame:'clue', clues:['Um mapa dividido em regiões','Um instrumento musical','Uma roupa de festa'], clueCorrect:0, foundMsg:'Pista encontrada!',
+ question:{text:'Qual era a principal função das satrapias?', options:['Organizar o comércio marítimo','Dividir e administrar o império','Escolher o novo rei','Treinar soldados'], correct:1,
+ explain:'As satrapias eram divisões que ajudavam a organizar e governar as diferentes regiões do enorme Império Persa.'},
+ reward:'selo'},
+
+{act:'Ato III — A organização do império', title:'O trabalho do sátrapa', objective:'Descobrir as tarefas de um sátrapa.',
+ emoji:'🏛️', type:'palace', scenario:'O palácio de uma província distante, onde um sátrapa recebe pedidos e organiza a cobrança de tributos.',
+ npc:{name:'Sátrapa da província', line:'Eu governo esta terra em nome do Grande Rei: cuido da ordem, da justiça e recolho os tributos do império.'},
+ minigame:'clue', clues:['Um registro de impostos coletados','Um brinquedo infantil','Uma pintura de paisagem'], clueCorrect:0, foundMsg:'Sátrapa investigado!',
+ question:{text:'O que fazia um sátrapa dentro do império?', options:['Governava uma satrapia em nome do rei, cobrando tributos e mantendo a ordem','Comandava só as festas religiosas','Era escolhido pelo povo em eleições','Cuidava só dos templos'], correct:0,
+ explain:'O sátrapa era o governador de uma província, responsável por manter a ordem e cobrar tributos para o rei.'},
+ reward:null},
+
+{act:'Ato III — A organização do império', title:'Os tributos do império', objective:'Organizar os tributos enviados por cada satrapia.',
+ emoji:'📦', type:'market', scenario:'Um grande pátio, onde caravanas trazem produtos de várias regiões para entregar como tributo ao rei.',
+ npc:{name:'Cobrador de tributos', line:'Cada satrapia manda o que produz de melhor. Me ajuda a organizar essas cestas antes da entrega ao tesouro real!'},
+ minigame:'assign',
+ items:['Ouro e prata','Tecidos finos','Cavalos','Grãos e alimentos'],
+ targets:['Lídia, rica em metais preciosos','Babilônia, famosa pelos tecidos','Média, conhecida pelos cavalos','Egito, terra fértil às margens do Nilo'],
+ correctMap:[0,1,2,3],
+ question:{text:'Por que os povos conquistados pagavam tributos ao Grande Rei?', options:['Para sustentar a administração, o exército e as obras do império','Porque eram obrigados a comprar produtos gregos','Para pagar competições esportivas','Porque não existia comércio no império'], correct:0,
+ explain:'Os tributos sustentavam a administração, o exército e as grandes obras do império, como palácios e estradas.'},
+ reward:null},
+
+{act:'Ato III — A organização do império', title:'A moeda dárico', objective:'Conhecer a moeda criada para facilitar o comércio.',
+ emoji:'🪙', type:'market', scenario:'Uma oficina onde artesãos cunham moedas de ouro brilhante, com a imagem de um arqueiro real.',
+ npc:{name:'Cunhador de moedas', line:'Esta é a moeda dárico. Foi criada para o comércio fluir com facilidade por todas as satrapias do império.'},
+ minigame:'clue', clues:['Um molde de cunhar moedas de ouro','Uma cesta de pães','Um tapete decorativo'], clueCorrect:0, foundMsg:'Pista encontrada!',
+ question:{text:'O que era o dárico?', options:['Uma moeda de ouro criada pelos persas para facilitar o comércio','Um tipo de tecido persa','Um imposto cobrado só sobre terras','Um cargo do governo persa'], correct:0,
+ explain:'O dárico era uma moeda de ouro criada pelos persas, usada para facilitar as trocas comerciais no império.'},
+ reward:'darico'},
+
+{act:'Ato III — A organização do império', title:'A grande estrada', objective:'Escolher a rota mais rápida entre as cidades do império.',
+ emoji:'🛤️', type:'road', scenario:'O começo da grande Estrada Real, com postos de troca de cavalos ao longo do caminho.',
+ npc:{name:'Mensageiro real', line:'Preciso levar uma mensagem urgente de Susa a Sardes. Qual caminho você escolheria para chegar mais rápido?'},
+ minigame:'route',
+ routes:[
+   {label:'Seguir pela Estrada Real, trocando de cavalo em cada posto', correct:true, feedback:'Isso mesmo! A Estrada Real tinha postos de troca que deixavam a viagem muito mais rápida.'},
+   {label:'Atravessar o deserto direto, sem trocar de cavalo', correct:false, feedback:'Sem trocar de cavalo, o animal cansa e a viagem fica bem mais lenta.'},
+   {label:'Contornar as montanhas por um caminho desconhecido', correct:false, feedback:'Um caminho desconhecido é arriscado e mais demorado do que a estrada oficial.'}
+ ],
+ question:{text:'Qual era a função da Estrada Real, construída pelos persas?', options:['Ligar Susa a Sardes, ajudando na comunicação, no comércio e nas viagens do exército','Servir só para passeios','Conectar só templos religiosos','Servir de fronteira entre satrapias'], correct:0,
+ explain:'A Estrada Real ligava Susa a Sardes e facilitava a comunicação, o comércio e o deslocamento das tropas.'},
+ reward:'estrada'},
+
+{act:'Ato IV — Os olhos do rei', title:'O inspetor secreto', objective:'Encontrar pistas escondidas sobre um inspetor disfarçado.',
+ emoji:'🕵️', type:'village', scenario:'Uma satrapia distante. Alguma coisa parece estranha por aqui... é hora de observar cada canto com atenção.',
+ npc:{name:'Comerciante desconfiado', line:'Dizem que existe alguém enviado pelo Grande Rei, observando tudo sem que ninguém perceba...'},
+ minigame:'hiddenclues', totalTiles:9, clueTiles:[1,4,7], foundMsg:'Pista encontrada!',
+ question:{text:'Por que o rei persa enviava inspetores secretos, os "Olhos e Ouvidos do Rei"?', options:['Para verificar se os sátrapas eram justos e fiéis ao rei','Para ensinar novas línguas ao povo','Para vender produtos do palácio','Para organizar festas anuais'], correct:0,
+ explain:'Os inspetores viajavam em segredo para fiscalizar os sátrapas e garantir que governassem com justiça.'},
+ reward:null},
+
+{act:'Ato IV — Os olhos do rei', title:'Os olhos e ouvidos do rei', objective:'Entender como funcionava essa rede de vigilância.',
+ emoji:'👁️', type:'road', scenario:'Uma carruagem viaja pela Estrada Real. Dentro dela, um viajante disfarçado observa tudo com atenção discreta.',
+ npc:{name:'Inspetor real disfarçado', line:'Eu viajo como um simples comerciante, mas na verdade conto ao Grande Rei tudo o que vejo pelo caminho.'},
+ minigame:'clue', clues:['Uma carta selada para o Grande Rei','Um prato de comida','Um instrumento de caça'], clueCorrect:0, foundMsg:'Segredo revelado!',
+ question:{text:'Como o sistema de inspetores ajudava a manter o império unido?', options:['Garantindo que as ordens do rei fossem cumpridas mesmo em lugares distantes','Substituindo os sátrapas em todas as tarefas','Cobrando tributos só em ouro','Escolhendo os próximos reis'], correct:0,
+ explain:'Circulando por todas as satrapias, os inspetores garantiam que as ordens do rei fossem respeitadas até nas regiões mais distantes.'},
+ reward:null},
+
+{act:'Ato IV — Os olhos do rei', title:'Descobrindo a corrupção', objective:'Reunir provas contra um sátrapa desonesto.',
+ emoji:'📜', type:'archive', scenario:'Um arquivo secreto, iluminado por tochas. Pergaminhos e registros esperam para ser analisados com cuidado.',
+ npc:{name:'Escriba investigador', line:'Encontrei registros estranhos sobre um sátrapa cobrando mais tributos do que deveria. Precisamos juntar provas.'},
+ minigame:'clue', clues:['Uma lista de provas contra o sátrapa desonesto','Um convite para uma festa','Um mapa de rotas comerciais'], clueCorrect:0, foundMsg:'Segredo revelado!',
+ question:{text:'O que podia acontecer com um sátrapa descoberto sendo injusto ou desonesto?', options:['Podia ser julgado e punido pelo Grande Rei','Nada acontecia, o poder dele era absoluto','Era promovido automaticamente','Era expulso sem nenhum julgamento'], correct:0,
+ explain:'Mesmo com muito poder, os sátrapas respondiam ao rei e podiam ser julgados e punidos se agissem de forma injusta.'},
+ reward:null},
+
+{act:'Ato IV — Os olhos do rei', title:'Diante do trono', objective:'Apresentar as provas reunidas durante toda a jornada.',
+ emoji:'👑', type:'palace', scenario:'O grande salão real de Persépolis, com colunas imponentes e desenhos esculpidos nas paredes de pedra.',
+ npc:{name:'Grande Rei', line:'Você trouxe provas fortes ao longo dessa jornada. Chegou o momento de mostrá-las diante de toda a corte.'},
+ minigame:'clue', clues:['O registro oficial do julgamento','Uma coroa apenas decorativa','Uma tapeçaria antiga'], clueCorrect:0, foundMsg:'Segredo revelado!',
+ question:{text:'Por que Persépolis era uma cidade tão importante para os persas?', options:['Era o centro das cerimônias e do poder do império, com grandes palácios','Era a única cidade com comércio','Era a capital dos medos antes da união','Foi fundada pelos gregos'], correct:0,
+ explain:'Persépolis era o centro das grandes cerimônias e do poder político dos reis persas.'},
+ reward:'medalha'},
+
+{act:'Ato V — Religião e legado', title:'A chama da verdade', objective:'Entender os valores do zoroastrismo e terminar a investigação.',
+ emoji:'🔥', type:'temple', scenario:'Um Templo do Fogo, onde uma chama sagrada arde sem parar diante de um sacerdote em silêncio.',
+ npc:{name:'Sacerdote zoroastrista', line:'Esta chama nunca se apaga. Ela representa a verdade, que devemos buscar em nossos pensamentos, palavras e ações.'},
+ minigame:'clue', clues:['O símbolo do bom pensamento, boa palavra e boa ação','Uma estátua de um deus estrangeiro','Um livro de receitas'], clueCorrect:0, foundMsg:'Segredo revelado!',
+ question:{text:'O que o zoroastrismo, a religião mais praticada pelos persas, valorizava?', options:['A verdade, o equilíbrio entre o bem e o mal, e as boas ações','O culto só aos faraós egípcios','Sacrifícios humanos obrigatórios','A proibição de qualquer religião'], correct:0,
+ explain:'O zoroastrismo valorizava a verdade e o equilíbrio entre o bem e o mal, com bons pensamentos, palavras e ações.'},
+ reward:'tocha'}
+];
+
+/* ============================================================
+   ÁUDIO AMBIENTE (WebAudio, tudo sintetizado)
+   ============================================================ */
+const Audio2 = {
+  ctx:null, master:null, nodes:[], timers:[], noiseBuffer:null, on:true, started:false,
+  init(){
+    if(this.ctx) return;
+    try{
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.on ? 0.5 : 0;
+      this.master.connect(this.ctx.destination);
+      this.noiseBuffer = this.makeNoiseBuffer();
+    }catch(e){ this.ctx = null; }
+  },
+  makeNoiseBuffer(){
+    const len = this.ctx.sampleRate * 2;
+    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+    return buf;
+  },
+  toggle(){
+    this.on = !this.on;
+    if(this.ctx) this.master.gain.linearRampToValueAtTime(this.on?0.5:0, this.ctx.currentTime+0.2);
+    document.getElementById('soundToggle').textContent = this.on ? '🔊' : '🔇';
+  },
+  clearAll(){
+    this.nodes.forEach(n=>{ try{n.stop&&n.stop();}catch(e){} try{n.disconnect&&n.disconnect();}catch(e){} });
+    this.nodes = [];
+    this.timers.forEach(t=>clearInterval(t));
+    this.timers = [];
+  },
+  noiseSource(){
+    const src = this.ctx.createBufferSource();
+    src.buffer = this.noiseBuffer; src.loop = true;
+    return src;
+  },
+  wind(){
+    if(!this.ctx) return;
+    const src = this.noiseSource();
+    const filter = this.ctx.createBiquadFilter();
+    filter.type='lowpass'; filter.frequency.value=420;
+    const g = this.ctx.createGain(); g.gain.value=0.18;
+    src.connect(filter); filter.connect(g); g.connect(this.master);
+    src.start();
+    const lfo = this.ctx.createOscillator(); lfo.frequency.value=0.08;
+    const lfoGain = this.ctx.createGain(); lfoGain.gain.value=140;
+    lfo.connect(lfoGain); lfoGain.connect(filter.frequency);
+    lfo.start();
+    this.nodes.push(src, filter, g, lfo, lfoGain);
+  },
+  fireBurst(){
+    if(!this.ctx) return;
+    const src = this.noiseSource();
+    const filter = this.ctx.createBiquadFilter();
+    filter.type='highpass'; filter.frequency.value=1800+Math.random()*1200;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.10+Math.random()*0.08, this.ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime+0.18);
+    src.connect(filter); filter.connect(g); g.connect(this.master);
+    src.start(); src.stop(this.ctx.currentTime+0.2);
+  },
+  birdChirp(){
+    if(!this.ctx) return;
+    const o = this.ctx.createOscillator();
+    o.type='sine'; o.frequency.value = 1100+Math.random()*700;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.09, this.ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime+0.22);
+    o.frequency.exponentialRampToValueAtTime(o.frequency.value*1.4, this.ctx.currentTime+0.18);
+    o.connect(g); g.connect(this.master);
+    o.start(); o.stop(this.ctx.currentTime+0.24);
+  },
+  coinPing(){
+    if(!this.ctx) return;
+    [1600, 2400].forEach((f,i)=>{
+      const o = this.ctx.createOscillator();
+      o.type='square'; o.frequency.value=f;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.05, this.ctx.currentTime+0.01+i*0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime+0.35);
+      o.connect(g); g.connect(this.master);
+      o.start(); o.stop(this.ctx.currentTime+0.4);
+    });
+  },
+  footstep(){
+    if(!this.ctx) return;
+    const src = this.noiseSource();
+    const filter = this.ctx.createBiquadFilter();
+    filter.type='lowpass'; filter.frequency.value=320;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime+0.14);
+    src.connect(filter); filter.connect(g); g.connect(this.master);
+    src.start(); src.stop(this.ctx.currentTime+0.16);
+  },
+  marketMurmur(){
+    if(!this.ctx) return;
+    for(let i=0;i<3;i++){
+      const o = this.ctx.createOscillator();
+      o.type='triangle'; o.frequency.value = 140+Math.random()*90;
+      const g = this.ctx.createGain(); g.gain.value = 0.02;
+      o.connect(g); g.connect(this.master);
+      o.start();
+      const lfo = this.ctx.createOscillator(); lfo.frequency.value=0.15+Math.random()*0.2;
+      const lfoGain = this.ctx.createGain(); lfoGain.gain.value=8;
+      lfo.connect(lfoGain); lfoGain.connect(o.frequency);
+      lfo.start();
+      this.nodes.push(o,g,lfo,lfoGain);
+    }
+  },
+  triumphChord(){
+    if(!this.ctx) return;
+    [261.6,329.6,392,523.2].forEach((f,i)=>{
+      const o = this.ctx.createOscillator();
+      o.type='sawtooth'; o.frequency.value=f;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, this.ctx.currentTime+i*0.08);
+      g.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime+i*0.08+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime+2.4);
+      o.connect(g); g.connect(this.master);
+      o.start(this.ctx.currentTime+i*0.08); o.stop(this.ctx.currentTime+2.5);
+    });
+  },
+  setAmbient(type){
+    if(!this.ctx){ this.init(); }
+    if(!this.ctx) return;
+    this.clearAll();
+    const cfg = {
+      desert:{wind:true, accents:['fire']},
+      camp:{wind:true, accents:['fire']},
+      city:{wind:false, accents:['bird','market']},
+      river:{wind:false, accents:['bird']},
+      road:{wind:true, accents:['footstep']},
+      palace:{wind:false, accents:['bird']},
+      market:{wind:false, accents:['market','coin']},
+      temple:{wind:false, accents:['fire']},
+      archive:{wind:false, accents:['coin']},
+      village:{wind:true, accents:['footstep','bird']}
+    }[type] || {wind:true, accents:['bird']};
+    if(cfg.wind) this.wind();
+    if(cfg.accents.includes('market')) this.marketMurmur();
+    const trigger = ()=>{
+      if(!this.on) return;
+      cfg.accents.forEach(a=>{
+        if(Math.random() < 0.5){
+          if(a==='fire') this.fireBurst();
+          else if(a==='bird') this.birdChirp();
+          else if(a==='coin') this.coinPing();
+          else if(a==='footstep') this.footstep();
+        }
+      });
+    };
+    const t = setInterval(trigger, 1600);
+    this.timers.push(t);
+  }
+};
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+let state = {
+  screen:'title',
+  player:{ name:'', hair:HAIRSTYLES[0].key, tunic:COLORS.tunic[0], symbol:SYMBOLS[0] },
+  phaseIndex:0,
+  score:0,
+  wrongCount:0,
+  inventory:[],
+  achievements:[],
+  cinematicsSeen:[],
+  sub:{},
+  showInventory:false,
+  showAchievements:false
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function addScore(n){ state.score += n; }
+function addItem(key){ if(key && !state.inventory.includes(key)) state.inventory.push(key); }
+function currentPhase(){ return PHASES[state.phaseIndex]; }
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+function getLevel(score){
+  let lvl = LEVELS[0];
+  for(const l of LEVELS){ if(score >= l.min) lvl = l; }
+  return lvl;
+}
+function getLevelProgress(score){
+  const idx = LEVELS.findIndex(l=>l.name===getLevel(score).name);
+  const cur = LEVELS[idx];
+  const next = LEVELS[idx+1];
+  if(!next) return {name:cur.name, pct:100, max:true};
+  const pct = Math.min(100, Math.round(((score-cur.min)/(next.min-cur.min))*100));
+  return {name:cur.name, pct, max:false};
+}
+
+function unlockAchievement(id){
+  if(state.achievements.includes(id)) return;
+  state.achievements.push(id);
+  const a = ACHIEVEMENTS.find(x=>x.id===id);
+  if(a) showToast('🏅 ' + a.name);
+}
+
+function showToast(text){
+  const wrap = document.getElementById('toastWrap');
+  if(!wrap) return;
+  const t = el(`<div class="toast">${escapeHtml(text)}</div>`);
+  wrap.appendChild(t);
+  setTimeout(()=>{ t.remove(); }, 2700);
+}
+
+function shakeScreen(){
+  const s = document.querySelector('.screen');
+  if(!s) return;
+  s.classList.remove('shake-screen');
+  void s.offsetWidth;
+  s.classList.add('shake-screen');
+}
+
+function playVeilTransition(){
+  const s = document.querySelector('.screen');
+  if(!s) return;
+  const veil = document.getElementById('veil');
+  if(!veil) return;
+  veil.classList.remove('active');
+  void veil.offsetWidth;
+  veil.classList.add('active');
+}
+
+/* efeito de digitação */
+function typeText(elm, text, speed, done){
+  elm.innerHTML = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  cursor.textContent = '▌';
+  let i = 0;
+  const span = document.createElement('span');
+  elm.appendChild(span);
+  elm.appendChild(cursor);
+  const timer = setInterval(()=>{
+    span.textContent = text.slice(0, i+1);
+    i++;
+    if(i >= text.length){
+      clearInterval(timer);
+      cursor.remove();
+      if(done) done();
+    }
+  }, speed || 18);
+  elm._skip = ()=>{
+    clearInterval(timer);
+    span.textContent = text;
+    cursor.remove();
+    if(done) done();
+  };
+  elm.onclick = ()=>{ if(elm._skip) elm._skip(); };
+}
+
+/* avatar */
+function avatarHTML(size){
+  const p = state.player;
+  const scale = size ? size/150 : 1;
+  const hairParts = {
+    'curto-liso':'<div class="av-hair cap"></div>',
+    'curto-cacheado':'<div class="av-hair cap"></div>',
+    'medio-liso':'<div class="av-hair cap"></div><div class="av-hair side"></div><div class="av-hair side2"></div>',
+    'medio-cacheado':'<div class="av-hair cap"></div><div class="av-hair side"></div><div class="av-hair side2"></div>',
+    'longo-liso':'<div class="av-hair cap"></div><div class="av-hair side"></div><div class="av-hair side2"></div>',
+    'longo-cacheado':'<div class="av-hair cap"></div><div class="av-hair side"></div><div class="av-hair side2"></div>',
+    'trancas':'<div class="av-hair cap"></div><div class="av-hair side"></div><div class="av-hair side2"></div><div class="av-hair tie"></div><div class="av-hair tie2"></div>',
+    'coque':'<div class="av-hair cap"></div><div class="av-hair bun"></div>'
+  };
+  return `<div class="avatar-wrap hair-${p.hair}" style="transform:scale(${scale});transform-origin:top center;--c-tunic:${p.tunic};">
+    ${hairParts[p.hair] || hairParts['curto-liso']}
+    <div class="av-head"></div>
+    <div class="av-body" style="background:${p.tunic};"></div>
+    <div class="av-belt"></div>
+    <div class="av-symbol">${p.symbol.icon}</div>
+    <div class="av-legs"></div>
+  </div>`;
+}
+
+/* ============================================================
+   RENDER: SHELL
+   ============================================================ */
+function render(){
+  const screenEl = document.getElementById('screen');
+  screenEl.innerHTML = '';
+  screenEl.appendChild(el('<div class="zigzag"></div>'));
+  const body = el('<div class="pad" id="pad"></div>');
+  screenEl.appendChild(body);
+  screenEl.appendChild(el('<div class="transition-veil" id="veil"></div>'));
+  screenEl.appendChild(el('<div class="toast-wrap" id="toastWrap"></div>'));
+
+  if(state.screen === 'title') renderTitle(body);
+  else if(state.screen === 'create') renderCreate(body);
+  else if(state.screen === 'game') renderGame(screenEl, body);
+  else if(state.screen === 'final') renderFinal(body);
+
+  if(state.showInventory) renderInventoryModal(screenEl);
+  if(state.showAchievements) renderAchievementsModal(screenEl);
+}
+
+document.getElementById('soundToggle').onclick = ()=>{
+  Audio2.init();
+  Audio2.toggle();
+};
+
+/* ============================================================
+   TELA INICIAL
+   ============================================================ */
+function renderTitle(body){
+  body.classList.add('title-screen');
+  body.innerHTML = `
+    <div class="eyebrow">UMA AVENTURA NO IMPÉRIO PERSA</div>
+    <div class="logo-wrap">
+      <div class="crest">👁️</div>
+    </div>
+    <h1>OS OLHOS DO REI</h1>
+    <div class="subtitle">Mistério no Império Persa</div>
+    <div class="title-fire"><div class="flame"></div><div class="flame"></div><div class="flame"></div></div>
+    <div class="title-walker" id="titleWalker"></div>
+    <p class="flicker" style="max-width:460px;margin:0 auto;">Documentos do Grande Rei desapareceram! Vista a capa de investigador e percorra o império inteiro até desvendar o mistério.</p>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn giant" id="startBtn">▶ COMEÇAR</button>
+    </div>
+  `;
+  const walker = document.getElementById('titleWalker');
+  const av = el(avatarHTML(70));
+  av.style.position='absolute'; av.style.left='0'; av.style.bottom='0';
+  av.style.animation='walkacross 7s linear infinite';
+  walker.appendChild(av);
+  if(!document.getElementById('walkStyle')){
+    const st = document.createElement('style');
+    st.id='walkStyle';
+    st.textContent = `@keyframes walkacross{0%{left:-10%;}100%{left:105%;}}`;
+    document.head.appendChild(st);
+  }
+  body.querySelector('#startBtn').onclick = ()=>{
+    Audio2.init();
+    state.screen='create'; render();
+  };
+}
+
+/* ============================================================
+   CRIAÇÃO DE PERSONAGEM
+   ============================================================ */
+function renderCreate(body){
+  body.innerHTML = `
+    <div class="eyebrow">PERSONALIZAÇÃO</div>
+    <h2>Crie seu investigador</h2>
+    <div class="creator-body">
+      <div class="creator-avatar" id="avatarBox"></div>
+      <div class="creator-options">
+        <div class="opt-row">
+          <label>Seu nome</label>
+          <input type="text" id="nameInput" maxlength="18" placeholder="Digite um nome..." value="${escapeHtml(state.player.name)}">
+        </div>
+        <div class="opt-row">
+          <label>Cor da roupa</label>
+          <div class="swatches" id="tunicRow">${swatchesHTML(COLORS.tunic,state.player.tunic)}</div>
+        </div>
+        <div class="opt-row">
+          <label>Símbolo do manto</label>
+          <div class="symbol-row">${SYMBOLS.map(s=>`<button class="symbol-btn ${state.player.symbol.key===s.key?'selected':''}" data-s="${s.key}" title="${s.name}">${s.icon}</button>`).join('')}</div>
+        </div>
+        <div class="opt-row">
+          <label>Tipo de cabelo</label>
+          <div class="hair-row">${HAIRSTYLES.map(h=>`<button class="hair-btn ${state.player.hair===h.key?'selected':''}" data-h="${h.key}">${h.name}</button>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row" style="justify-content:flex-end;margin-top:10px;">
+      <button class="btn secondary" id="backBtn">◀ Voltar</button>
+      <button class="btn giant" id="playBtn">Começar Aventura ▶</button>
+    </div>
+  `;
+  document.getElementById('avatarBox').innerHTML = avatarHTML(160);
+
+  body.querySelector('#nameInput').oninput = (e)=>{ state.player.name = e.target.value; };
+  body.querySelectorAll('#tunicRow .swatch').forEach(sw=>{
+    sw.onclick = ()=>{ state.player.tunic = sw.dataset.color; renderCreate(body); };
+  });
+  body.querySelectorAll('.symbol-btn').forEach(b=>{
+    b.onclick = ()=>{ state.player.symbol = SYMBOLS.find(s=>s.key===b.dataset.s); renderCreate(body); };
+  });
+  body.querySelectorAll('.hair-btn').forEach(b=>{
+    b.onclick = ()=>{ state.player.hair = b.dataset.h; renderCreate(body); };
+  });
+  body.querySelector('#backBtn').onclick = ()=>{ state.screen='title'; render(); };
+  body.querySelector('#playBtn').onclick = ()=>{
+    if(!state.player.name.trim()) state.player.name = 'Investigador';
+    state.screen='game'; state.phaseIndex=0; state.sub={};
+    render();
+  };
+}
+function swatchesHTML(colors, current){
+  return colors.map(c=>`<button class="swatch ${c===current?'selected':''}" data-color="${c}" style="background:${c}"></button>`).join('');
+}
+
+/* ============================================================
+   JOGO — CASCA
+   ============================================================ */
+function renderGame(screenEl, body){
+  const phase = currentPhase();
+  const lvl = getLevelProgress(state.score);
+  const hud = el(`
+    <div class="hud">
+      <div class="pill">👤 ${escapeHtml(state.player.name)}</div>
+      <div class="xpwrap">
+        <div class="xplabel">${lvl.name}${lvl.max ? ' — Nível máximo!' : ''}</div>
+        <div class="progressbar"><div class="progressfill" style="width:${lvl.pct}%"></div></div>
+      </div>
+      <div class="pill">⭐ ${state.score}</div>
+      <div class="pill">Fase ${state.phaseIndex+1}/${PHASES.length}</div>
+      <button class="btn secondary hud-btn" id="achBtn">🏅</button>
+      <button class="btn secondary hud-btn" id="invBtn">🎒</button>
+    </div>
+  `);
+  screenEl.insertBefore(hud, body);
+  hud.querySelector('#invBtn').onclick = ()=>{ state.showInventory = true; render(); };
+  hud.querySelector('#achBtn').onclick = ()=>{ state.showAchievements = true; render(); };
+
+  const sub = state.sub;
+  if(!sub.stage) sub.stage = pickInitialStage(phase);
+
+  Audio2.setAmbient(phase.type);
+
+  if(sub.stage === 'cinematic') renderCinematic(body, phase);
+  else if(sub.stage === 'intro') renderPhaseIntro(body, phase);
+  else if(sub.stage === 'minigame') renderMinigame(body, phase);
+  else if(sub.stage === 'question') renderQuestion(body, phase);
+  else if(sub.stage === 'reward') renderReward(body, phase);
+}
+
+function pickInitialStage(phase){
+  const cine = CINEMATICS[phase.title];
+  if(cine && !state.cinematicsSeen.includes(phase.title)) return 'cinematic';
+  return 'intro';
+}
+
+/* ============================================================
+   CENA CINEMATOGRÁFICA
+   ============================================================ */
+function renderCinematic(body, phase){
+  const cine = CINEMATICS[phase.title];
+  body.classList.add('cinematic');
+  body.innerHTML = `
+    <div class="cine-label">${cine.label}</div>
+    <div class="cine-emoji">${cine.emoji}</div>
+    <h1>${cine.titleC}</h1>
+    <p class="cine-text" id="cineText"></p>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn giant" id="cineContinue" style="display:none;">Continuar ▶</button>
+    </div>
+  `;
+  typeText(document.getElementById('cineText'), cine.text, 22, ()=>{
+    document.getElementById('cineContinue').style.display='inline-block';
+  });
+  body.querySelector('#cineContinue').onclick = ()=>{
+    state.cinematicsSeen.push(phase.title);
+    state.sub.stage = 'intro';
+    playVeilTransition();
+    render();
+  };
+}
+
+/* ============================================================
+   INTRODUÇÃO DA FASE
+   ============================================================ */
+function renderPhaseIntro(body, phase){
+  body.innerHTML = `
+    <div class="act-banner">${phase.act}</div>
+    <h2>Fase ${state.phaseIndex+1} — ${phase.title}</h2>
+    <div class="scene-card">
+      <div class="scene-emoji">${phase.emoji}</div>
+      <p><strong>Objetivo:</strong> ${phase.objective}</p>
+      <p>${phase.scenario}</p>
+      <div class="npc-box">
+        <div class="npc-name">${phase.npc.name}</div>
+        <p class="npc-line" id="npcLine"></p>
+      </div>
+    </div>
+    <div class="btn-row" style="justify-content:flex-end;">
+      <button class="btn giant" id="investigateBtn" style="display:none;">🔎 Explorar</button>
+    </div>
+  `;
+  typeText(document.getElementById('npcLine'), phase.npc.line, 16, ()=>{
+    document.getElementById('investigateBtn').style.display='inline-block';
+  });
+  body.querySelector('#investigateBtn').onclick = ()=>{
+    state.sub.stage='minigame';
+    playVeilTransition();
+    render();
+  };
+}
+
+/* ============================================================
+   MINIJOGOS
+   ============================================================ */
+function renderMinigame(body, phase){
+  if(phase.minigame === 'clue') renderExploreClues(body, phase);
+  else if(phase.minigame === 'symbol' || phase.minigame === 'match2') renderMatchGame(body, phase);
+  else if(phase.minigame === 'assign') renderAssignGame(body, phase);
+  else if(phase.minigame === 'route') renderRouteGame(body, phase);
+  else if(phase.minigame === 'hiddenclues') renderHiddenClues(body, phase);
+}
+function goToQuestion(){ state.sub.stage='question'; playVeilTransition(); render(); }
+
+/* --- exploração livre: andar pela cena e achar a pista --- */
+function decorForType(type){
+  let html = '<div class="explore-ground"></div>';
+  if(['desert','road','camp'].includes(type)){
+    for(let i=0;i<14;i++){
+      const delay = (Math.random()*4).toFixed(2);
+      const dur = (3+Math.random()*3).toFixed(2);
+      const bottom = Math.random()*70;
+      const left = Math.random()*90;
+      html += `<div class="sand-particle" style="left:${left}%;bottom:${bottom}%;animation-duration:${dur}s;animation-delay:${delay}s;"></div>`;
+    }
+  }
+  if(['temple','camp'].includes(type)){
+    html += `<div class="mini-fire" style="left:14%;"></div><div class="mini-fire" style="left:82%;animation-delay:.3s;"></div>`;
+  }
+  if(['palace','city','river'].includes(type)){
+    html += `<div class="bird" style="left:10%;top:14%;">🐦</div><div class="bird" style="left:55%;top:24%;animation-delay:2s;">🐦</div>`;
+  }
+  return html;
+}
+function renderExploreClues(body, phase){
+  const positions = [ {x:22,y:66}, {x:52,y:44}, {x:80,y:68} ];
+  body.innerHTML = `
+    <h3>🚶 Ande pela cena e toque no que parece importante</h3>
+    <div class="explore-wrap type-${phase.type}" id="expWrap">
+      <div class="explore-hint">Toque em um objeto brilhante para examinar</div>
+      ${decorForType(phase.type)}
+      ${phase.clues.map((c,i)=>`<div class="hotspot-dot" data-i="${i}" style="left:${positions[i%positions.length].x}%;top:${positions[i%positions.length].y}%;" title="${escapeHtml(c)}">✨</div>`).join('')}
+      <div class="exp-avatar" id="expAvatar" style="left:50%;top:88%;"></div>
+    </div>
+    <p id="hMsg" style="min-height:28px;text-align:center;"></p>
+  `;
+  document.getElementById('expAvatar').innerHTML = avatarHTML(52);
+  const wrap = document.getElementById('expWrap');
+  const avatar = document.getElementById('expAvatar');
+
+  const moveAvatarTo = (xPct, yPct, cb)=>{
+    Audio2.footstep();
+    avatar.style.left = xPct+'%';
+    avatar.style.top = yPct+'%';
+    setTimeout(()=>{ Audio2.footstep(); }, 220);
+    if(cb) setTimeout(cb, 520);
+  };
+
+  wrap.addEventListener('click', (e)=>{
+    if(e.target.classList.contains('hotspot-dot')) return;
+    const rect = wrap.getBoundingClientRect();
+    const xPct = ((e.clientX - rect.left)/rect.width)*100;
+    const yPct = Math.max(55, Math.min(92, ((e.clientY - rect.top)/rect.height)*100));
+    moveAvatarTo(xPct, yPct);
+  });
+
+  wrap.querySelectorAll('.hotspot-dot').forEach(h=>{
+    h.onclick = (e)=>{
+      e.stopPropagation();
+      const i = parseInt(h.dataset.i);
+      const hx = parseFloat(h.style.left);
+      const hy = parseFloat(h.style.top);
+      wrap.querySelectorAll('.hotspot-dot').forEach(x=>x.style.pointerEvents='none');
+      moveAvatarTo(hx, Math.min(92, hy+10), ()=>{
+        if(i === phase.clueCorrect){
+          h.classList.add('correct');
+          document.getElementById('hMsg').textContent = '✅ ' + (phase.foundMsg || 'Pista encontrada!') + ' (+5 pontos)';
+          addScore(5);
+          shakeScreen();
+          showToast('✨ ' + (phase.foundMsg || 'Pista encontrada!'));
+          if(!state.achievements.includes('first_clue')) unlockAchievement('first_clue');
+          setTimeout(goToQuestion, 750);
+        } else {
+          h.classList.add('wrong');
+          document.getElementById('hMsg').textContent = 'Isso não parece ser a pista certa... procure outro lugar.';
+          setTimeout(()=>{
+            h.classList.remove('wrong');
+            wrap.querySelectorAll('.hotspot-dot').forEach(x=>x.style.pointerEvents='auto');
+          }, 900);
+        }
+      });
+    };
+  });
+}
+
+/* --- jogo de combinação (symbol / match2) --- */
+function renderMatchGame(body, phase){
+  const sub = state.sub;
+  if(!sub.match){
+    const symbols = phase.pairs.map((p,i)=>({idx:i, text:p.symbol}));
+    const meanings = phase.pairs.map((p,i)=>({idx:i, text:p.meaning}));
+    sub.match = { symbols: shuffle(symbols.slice()), meanings: shuffle(meanings.slice()), locked:[], selSym:null };
+  }
+  const m = sub.match;
+  body.innerHTML = `
+    <h3>🧩 Ligue cada item ao seu significado</h3>
+    <div class="scene-card">
+      <div class="match-cols">
+        <div class="match-col" id="colSym"></div>
+        <div class="match-col" id="colMean"></div>
+      </div>
+      <p id="mMsg" style="min-height:28px;">Encontrados: ${m.locked.length}/${phase.pairs.length}</p>
+    </div>
+  `;
+  const colSym = body.querySelector('#colSym');
+  const colMean = body.querySelector('#colMean');
+  m.symbols.forEach(s=>{
+    const locked = m.locked.includes(s.idx);
+    const chip = el(`<div class="match-chip ${locked?'locked':''} ${m.selSym===s.idx?'selected':''}">${s.text}</div>`);
+    if(!locked) chip.onclick = ()=>{ m.selSym = s.idx; renderMatchGame(body, phase); };
+    colSym.appendChild(chip);
+  });
+  m.meanings.forEach(mn=>{
+    const locked = m.locked.includes(mn.idx);
+    const chip = el(`<div class="match-chip ${locked?'locked':''}">${mn.text}</div>`);
+    if(!locked) chip.onclick = ()=>{
+      if(m.selSym === null) return;
+      if(m.selSym === mn.idx){
+        m.locked.push(mn.idx);
+        m.selSym = null;
+        if(m.locked.length === phase.pairs.length){
+          addScore(20);
+          showToast('✨ Segredo revelado!');
+          setTimeout(goToQuestion, 500);
+        }
+        renderMatchGame(body, phase);
+      } else {
+        chip.classList.add('shake');
+        setTimeout(()=>chip.classList.remove('shake'), 300);
+        m.selSym = null;
+      }
+    };
+    colMean.appendChild(chip);
+  });
+}
+
+/* --- jogo de posicionar (mapa / tributos) --- */
+function renderAssignGame(body, phase){
+  const sub = state.sub;
+  if(!sub.assign){ sub.assign = { placed:{}, selectedChip:null }; }
+  const a = sub.assign;
+  const items = phase.items;
+  const targets = phase.targets;
+  const placedCount = Object.keys(a.placed).length;
+  body.innerHTML = `
+    <h3>🗂️ Escolha um item e toque no local certo</h3>
+    <div class="scene-card">
+      <div class="assign-zone">
+        <div class="chips" id="chipRow">
+          ${items.map((it,i)=>{
+            const used = Object.values(a.placed).includes(i);
+            return `<button class="chip ${used?'used':''} ${a.selectedChip===i?'selected':''}" data-i="${i}">${it}</button>`;
+          }).join('')}
+        </div>
+        <div class="targets" id="targetCol">
+          ${targets.map((t,i)=>{
+            const filledIdx = a.placed[i];
+            return `<div class="target ${filledIdx!==undefined?'filled':''}" data-t="${i}"><strong>${filledIdx!==undefined? items[filledIdx]+' → ' : ''}</strong>${t}</div>`;
+          }).join('')}
+        </div>
+      </div>
+      <p id="aMsg" style="min-height:28px;">Posicionados: ${placedCount}/${items.length}</p>
+    </div>
+  `;
+  body.querySelectorAll('#chipRow .chip').forEach(c=>{
+    c.onclick = ()=>{ a.selectedChip = parseInt(c.dataset.i); renderAssignGame(body, phase); };
+  });
+  body.querySelectorAll('#targetCol .target').forEach(t=>{
+    t.onclick = ()=>{
+      if(a.selectedChip === null) return;
+      const ti = parseInt(t.dataset.t);
+      if(a.placed[ti] !== undefined) return;
+      if(phase.correctMap[a.selectedChip] === ti){
+        a.placed[ti] = a.selectedChip;
+        a.selectedChip = null;
+        if(Object.keys(a.placed).length === items.length){
+          addScore(20);
+          showToast('✨ Documento recuperado!');
+          document.getElementById('aMsg') && (document.getElementById('aMsg').textContent = '✅ Tudo posicionado! (+20 pontos)');
+          setTimeout(goToQuestion, 700);
+        }
+        renderAssignGame(body, phase);
+      } else {
+        t.classList.add('wrong-flash');
+        body.querySelector('#aMsg').textContent = 'Esse item não é daqui. Tente de novo.';
+        setTimeout(()=>t.classList.remove('wrong-flash'), 300);
+        a.selectedChip = null;
+      }
+    };
+  });
+}
+
+/* --- escolha de rota --- */
+function renderRouteGame(body, phase){
+  body.innerHTML = `
+    <h3>🛣️ Escolha a melhor rota para a mensagem chegar rápido</h3>
+    <div class="scene-card">
+      <div class="q-options" id="routeOpts">
+        ${phase.routes.map((r,i)=>`<button class="q-opt" data-i="${i}">${r.label}</button>`).join('')}
+      </div>
+      <p id="rMsg" style="min-height:28px;"></p>
+    </div>
+  `;
+  body.querySelectorAll('#routeOpts .q-opt').forEach(b=>{
+    b.onclick = ()=>{
+      const i = parseInt(b.dataset.i);
+      const r = phase.routes[i];
+      body.querySelectorAll('#routeOpts .q-opt').forEach(x=>x.disabled=true);
+      if(r.correct){ b.classList.add('correct'); addScore(20); showToast('✨ Pista encontrada!'); }
+      else { b.classList.add('wrong'); }
+      body.querySelector('#rMsg').textContent = r.feedback;
+      if(r.correct){ setTimeout(goToQuestion, 900); }
+      else {
+        setTimeout(()=>{
+          body.querySelectorAll('#routeOpts .q-opt').forEach(x=>{x.disabled=false; x.classList.remove('wrong');});
+          body.querySelector('#rMsg').textContent='';
+        }, 1100);
+      }
+    };
+  });
+}
+
+/* --- pistas escondidas --- */
+function renderHiddenClues(body, phase){
+  const sub = state.sub;
+  if(!sub.hidden){ sub.hidden = { found: [] }; }
+  const h = sub.hidden;
+  body.innerHTML = `
+    <h3>🕵️ Toque nos pontos que escondem pistas</h3>
+    <div class="scene-card">
+      <div class="clue-grid" id="cgrid">
+        ${Array.from({length:phase.totalTiles}).map((_,i)=>{
+          const isClue = phase.clueTiles.includes(i);
+          const found = h.found.includes(i);
+          return `<div class="tile ${found?'found':''}" data-i="${i}">${found? (isClue?'🔎':'❌') : ''}</div>`;
+        }).join('')}
+      </div>
+      <p id="cMsg" style="min-height:28px;">Pistas encontradas: ${h.found.filter(i=>phase.clueTiles.includes(i)).length}/${phase.clueTiles.length}</p>
+    </div>
+  `;
+  body.querySelectorAll('#cgrid .tile').forEach(t=>{
+    t.onclick = ()=>{
+      const i = parseInt(t.dataset.i);
+      if(h.found.includes(i)) return;
+      h.found.push(i);
+      const isClue = phase.clueTiles.includes(i);
+      if(isClue){ addScore(5); shakeScreen(); showToast('✨ ' + (phase.foundMsg || 'Pista encontrada!')); }
+      renderHiddenClues(body, phase);
+      const foundClues = h.found.filter(x=>phase.clueTiles.includes(x)).length;
+      if(foundClues === phase.clueTiles.length){
+        addScore(15);
+        document.getElementById('cMsg').textContent = '✅ Todas as pistas foram encontradas! (+20 pontos)';
+        setTimeout(goToQuestion, 800);
+      }
+    };
+  });
+}
+
+/* ============================================================
+   PERGUNTA
+   ============================================================ */
+function renderQuestion(body, phase){
+  const q = phase.question;
+  body.innerHTML = `
+    <h3>📖 Pergunta do Historiador</h3>
+    <div class="scene-card">
+      <p>${q.text}</p>
+      <div class="q-options" id="qOpts">
+        ${q.options.map((o,i)=>`<button class="q-opt" data-i="${i}">${String.fromCharCode(65+i)}) ${o}</button>`).join('')}
+      </div>
+      <div id="explainBox"></div>
+    </div>
+    <div class="btn-row" style="justify-content:flex-end;" id="continueRow"></div>
+  `;
+  const opts = body.querySelectorAll('#qOpts .q-opt');
+  opts.forEach(b=>{
+    b.onclick = ()=>{
+      const i = parseInt(b.dataset.i);
+      opts.forEach(x=>x.disabled = true);
+      if(i === q.correct){
+        b.classList.add('correct');
+        addScore(10);
+      } else {
+        b.classList.add('wrong');
+        opts[q.correct].classList.add('correct');
+        state.wrongCount++;
+      }
+      body.querySelector('#explainBox').innerHTML = `<div class="explain-box"><strong>Explicação:</strong> ${q.explain}</div>`;
+      const row = body.querySelector('#continueRow');
+      row.innerHTML = `<button class="btn giant" id="contBtn">Continuar ▶</button>`;
+      row.querySelector('#contBtn').onclick = ()=>{ state.sub.stage='reward'; playVeilTransition(); render(); };
+    };
+  });
+}
+
+/* ============================================================
+   RECOMPENSA
+   ============================================================ */
+function renderReward(body, phase){
+  if(phase.reward) addItem(phase.reward);
+  const item = phase.reward ? ITEMS[phase.reward] : null;
+  const isLast = state.phaseIndex === PHASES.length - 1;
+  const prevAct = state.phaseIndex>0 ? PHASES[state.phaseIndex-1].act : null;
+  const changingAct = prevAct && prevAct !== phase.act;
+  body.innerHTML = `
+    <h3>🏆 Fase concluída!</h3>
+    <div class="reward-banner">
+      ${item ? `<div style="font-size:52px;" class="${item.icon==='🪙'?'coin-shine':''} glow-gold">${item.icon}</div><p><strong>${item.name}</strong> foi para o seu inventário!</p><p style="font-size:19px;color:var(--sand);">${item.desc}</p>` : `<p>Você avançou na investigação! Pontuação atual: ⭐ ${state.score}</p>`}
+    </div>
+    <div class="btn-row" style="justify-content:flex-end;">
+      <button class="btn giant" id="nextBtn">${isLast ? 'Ver Resultado Final ▶' : 'Próxima Fase ▶'}</button>
+    </div>
+  `;
+  checkAchievementsAfterPhase(phase);
+  body.querySelector('#nextBtn').onclick = ()=>{
+    if(isLast){ state.screen='final'; }
+    else { state.phaseIndex++; state.sub={ stage: pickInitialStage(PHASES[state.phaseIndex]) }; }
+    playVeilTransition();
+    render();
+  };
+}
+
+function checkAchievementsAfterPhase(phase){
+  const isLastOfAct = (state.phaseIndex === PHASES.length-1) || PHASES[state.phaseIndex+1].act !== phase.act;
+  if(isLastOfAct){
+    if(phase.act.startsWith('Ato I —')) unlockAchievement('act1');
+    else if(phase.act.startsWith('Ato II')) unlockAchievement('act2');
+    else if(phase.act.startsWith('Ato III')) unlockAchievement('act3');
+    else if(phase.act.startsWith('Ato IV')) unlockAchievement('act4');
+    else if(phase.act.startsWith('Ato V')) unlockAchievement('act5');
+  }
+  if(Object.keys(ITEMS).every(k=>state.inventory.includes(k))) unlockAchievement('collector');
+  if(state.phaseIndex === PHASES.length-1 && state.wrongCount===0) unlockAchievement('perfect');
+}
+
+/* ============================================================
+   MODAIS
+   ============================================================ */
+function renderInventoryModal(screenEl){
+  const overlay = el(`<div class="modal-overlay"><div class="modal">
+    <h2>🎒 Inventário</h2>
+    <p style="font-size:18px;color:var(--sand);">Itens históricos que você já recuperou.</p>
+    <div class="inv-grid" id="invGrid"></div>
+    <div class="btn-row" style="justify-content:flex-end;margin-top:14px;">
+      <button class="btn secondary" id="closeInv">Fechar</button>
+    </div>
+  </div></div>`);
+  const grid = overlay.querySelector('#invGrid');
+  Object.keys(ITEMS).forEach(key=>{
+    const it = ITEMS[key];
+    if(state.inventory.includes(key)){
+      grid.appendChild(el(`<div class="inv-item"><div class="ic glow-gold">${it.icon}</div><div class="nm">${it.name}</div><div class="ds">${it.desc}</div></div>`));
+    } else {
+      grid.appendChild(el(`<div class="inv-empty-slot">?</div>`));
+    }
+  });
+  overlay.querySelector('#closeInv').onclick = ()=>{ state.showInventory = false; render(); };
+  screenEl.appendChild(overlay);
+}
+
+function renderAchievementsModal(screenEl){
+  const overlay = el(`<div class="modal-overlay"><div class="modal">
+    <h2>🏅 Conquistas</h2>
+    <p style="font-size:18px;color:var(--sand);">Marcos da sua jornada pelo império.</p>
+    <div class="ach-grid" id="achGrid"></div>
+    <div class="btn-row" style="justify-content:flex-end;margin-top:14px;">
+      <button class="btn secondary" id="closeAch">Fechar</button>
+    </div>
+  </div></div>`);
+  const grid = overlay.querySelector('#achGrid');
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked = state.achievements.includes(a.id);
+    grid.appendChild(el(`<div class="ach-item ${unlocked?'':'locked'}">
+      <div class="aic">${unlocked ? a.icon : '❔'}</div>
+      <div><div class="anm">${a.name}</div><div class="ads">${a.desc}</div></div>
+    </div>`));
+  });
+  overlay.querySelector('#closeAch').onclick = ()=>{ state.showAchievements = false; render(); };
+  screenEl.appendChild(overlay);
+}
+
+/* ============================================================
+   TELA FINAL
+   ============================================================ */
+function getRank(score){
+  if(score < 100) return 'Aprendiz da História';
+  if(score < 200) return 'Escriba Real';
+  if(score < 280) return 'Guardião das Satrapias';
+  if(score < 350) return 'Olhos do Rei';
+  return 'Mestre do Império Persa';
+}
+function renderFinal(body){
+  body.classList.add('final-screen');
+  const rank = getRank(state.score);
+  body.innerHTML = `
+    <div class="eyebrow">MISTÉRIO RESOLVIDO</div>
+    <div class="explore-wrap type-palace" style="height:170px;width:100%;max-width:520px;">
+      ${decorForType('palace')}
+      <div class="mini-fire" style="left:20%;"></div>
+      <div class="mini-fire" style="left:75%;animation-delay:.4s;"></div>
+      <div class="scene-emoji" style="position:absolute;top:30%;left:0;right:0;">🏛️✨</div>
+    </div>
+    <h1>PERSÉPOLIS EM PAZ</h1>
+    <p>Graças à sua investigação, ${escapeHtml(state.player.name)}, a verdade veio à tona e a justiça voltou a reinar em nome do Grande Rei.</p>
+    <div class="rank-badge">⭐ ${state.score} pontos<br>Título: ${rank}</div>
+    <div class="scene-card" style="text-align:left;max-width:560px;">
+      <h3>📜 O que você descobriu nesta jornada:</h3>
+      <ul class="summary-list">
+        <li>Ciro uniu medos e persas em 550 a.C. e fundou o Império Persa.</li>
+        <li>Cambises conquistou o Egito, deixando o território ainda maior.</li>
+        <li>Dario organizou a administração do império em satrapias.</li>
+        <li>O império respeitava os costumes e religiões dos povos conquistados.</li>
+        <li>As satrapias e a Estrada Real fortaleceram o governo e a comunicação.</li>
+        <li>Os inspetores, "Olhos e Ouvidos do Rei", fiscalizavam os governadores.</li>
+        <li>O zoroastrismo valorizava a verdade e as boas ações.</li>
+      </ul>
+    </div>
+    <p style="font-family:'Press Start 2P';font-size:12px;color:var(--gold);text-shadow:2px 2px 0 #000;">"A verdade protege o império."</p>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn secondary" id="achBtnFinal">🏅 Conquistas</button>
+      <button class="btn secondary" id="invBtnFinal">🎒 Inventário</button>
+      <button class="btn giant" id="restartBtn">🔄 Jogar Novamente</button>
+    </div>
+  `;
+  Audio2.clearAll();
+  Audio2.init();
+  Audio2.triumphChord();
+  body.querySelector('#invBtnFinal').onclick = ()=>{ state.showInventory = true; render(); };
+  body.querySelector('#achBtnFinal').onclick = ()=>{ state.showAchievements = true; render(); };
+  body.querySelector('#restartBtn').onclick = ()=>{
+    Audio2.clearAll();
+    state = {
+      screen:'title',
+      player:{ name:'', hair:HAIRSTYLES[0].key, tunic:COLORS.tunic[0], symbol:SYMBOLS[0] },
+      phaseIndex:0, score:0, wrongCount:0, inventory:[], achievements:[], cinematicsSeen:[],
+      sub:{}, showInventory:false, showAchievements:false
+    };
+    render();
+  };
+}
+
+/* ============================================================
+   INÍCIO
+   ============================================================ */
+render();
+</script>
+</body>
+</html>
